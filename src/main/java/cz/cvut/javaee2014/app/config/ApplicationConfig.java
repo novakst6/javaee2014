@@ -13,15 +13,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 /**
  *
  * @author Stenlik
  */
 @Configuration
-@ComponentScan(basePackages = {"cz.cvut.javaee2014"})
+@ComponentScan //(basePackages = {"cz.cvut.javaee2014"})
 @EnableCaching //@Cachable required
 public class ApplicationConfig {
+    
+    // adresáře ve filesystému
+    public static final String rootFileSystemDirectory = "E:/CVUT/JEE/javaee2014/fileStorage";
+    public static String uploadFileSystemDirectory = rootFileSystemDirectory + "/uploads";
+    public static String webFileSystemDirectory = rootFileSystemDirectory + "/web";
     
     @Bean
     public CacheManager cacheManager(){
@@ -32,4 +38,10 @@ public class ApplicationConfig {
     public ShaPasswordEncoder passwordEncoder(){
         return new ShaPasswordEncoder();
     }
+    
+    @Bean
+    public static StandardServletMultipartResolver multipartResolver() {
+        StandardServletMultipartResolver resolver = new StandardServletMultipartResolver();
+        return resolver;
+    }    
 }

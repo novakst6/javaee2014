@@ -10,6 +10,11 @@ import cz.cvut.javaee2014.model.entity.UserEntity;
 import cz.cvut.javaee2014.model.entity.UserRoleEntity;
 import cz.cvut.javaee2014.service.repository.UserManager;
 import cz.cvut.javaee2014.service.repository.UserRoleManager;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,6 +37,23 @@ public class RootController {
     
     @Autowired
     ShaPasswordEncoder spe;
+    
+    @RequestMapping(value = {"denied.htm"},method = {RequestMethod.GET})
+    public void denied(HttpServletResponse response){
+        response.setHeader("Content-Type", "text/html");
+        response.setHeader("success", "yes");
+        
+        // odeslání textu
+        try {
+            PrintWriter writer;
+            writer = response.getWriter();
+            writer.write("<html><h1>DENIED</h1></html>");
+            writer.close();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(RootController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
     
     @RequestMapping(value = {"login.htm"},method = {RequestMethod.GET})
     public String login(){
