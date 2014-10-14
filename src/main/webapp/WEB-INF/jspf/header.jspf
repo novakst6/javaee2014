@@ -6,8 +6,8 @@
         <meta name="author" content="Stanislav Novák, stenlik@gmail.com">
         <meta name="keywords" content="sportdiary">
         <title>SPORT Diary</title>
-        <link href="<s:url value="/css/bootstrap.css" />" rel="stylesheet" >
         <script src="<s:url value="/js/jquery-2.1.1.min.js"/>"></script>
+        <link href="<s:url value="/css/bootstrap.css" />" rel="stylesheet" >
     </head>
     <body>
     

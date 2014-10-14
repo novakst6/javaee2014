@@ -6,24 +6,18 @@
 package cz.cvut.javaee2014.app.config.web;
 
 import cz.cvut.javaee2014.app.config.hibernate.PersistenceConfig;
-import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor;
-import org.springframework.web.accept.ContentNegotiationManagerFactoryBean;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 /**
  *
@@ -36,7 +30,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     PersistenceConfig persistenceConfig;
-    
+
 //    	@Bean
 //	public ContentNegotiatingViewResolver contentViewResolver() throws Exception {
 //		ContentNegotiationManagerFactoryBean contentNegotiationManager = new ContentNegotiationManagerFactoryBean();
@@ -56,8 +50,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 //		contentViewResolver.setDefaultViews(Arrays.<View> asList(defaultView));
 //		return contentViewResolver;
 //	}
-
-    
     @Bean
     public ViewResolver resolver() {
         InternalResourceViewResolver url = new InternalResourceViewResolver();
@@ -65,11 +57,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         url.setSuffix(".jsp");
         return url;
     }
-    
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -82,7 +74,5 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         interceptor.setSessionFactory(persistenceConfig.sessionFactory());
         registry.addWebRequestInterceptor(interceptor);
     }
-
-    
 
 }
