@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 // */
 @Controller
 @RequestMapping(value = {"entity"})
-public class FileUploadController {
+public class FileUploadControllerLegacy {
 
     @Autowired
     private Environment env;
@@ -39,13 +39,13 @@ public class FileUploadController {
     @Autowired
     private FileManager fm;
 
-    @RequestMapping(value = "/upload.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/legacy/upload.htm", method = RequestMethod.GET)
     public String uploadGET(ModelMap m) {
         m.addAttribute("files", fm.findAll());
         return "entity/file/index";
     }
 
-    @RequestMapping(value = "/upload.htm", method = RequestMethod.POST)
+    @RequestMapping(value = "/legacy/upload.htm", method = RequestMethod.POST)
     public String uploadPOST(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Iterator<String> itr = request.getFileNames();
@@ -81,7 +81,7 @@ public class FileUploadController {
         return "redirect:upload.htm";
     }
 
-    @RequestMapping(value = {"/download.htm"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/legacy/download.htm"}, method = RequestMethod.GET)
     public String downloadGET(HttpServletResponse response, @RequestParam("id") Long id) {
         FileEntity mimeFile = fm.findById(id);
         try {
