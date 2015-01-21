@@ -12,9 +12,10 @@ import cz.cvut.javaee2014.service.repository.UserManager;
 import cz.cvut.javaee2014.service.repository.UserRoleManager;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,7 @@ public class RootController {
         response.setHeader("Content-Type", "text/html");
         response.setHeader("success", "yes");
         
-        // odeslání textu
+        // odeslĂˇnĂ­ textu
         try {
             PrintWriter writer;
             writer = response.getWriter();
@@ -51,12 +52,16 @@ public class RootController {
             writer.close();
             
         } catch (IOException ex) {
-            Logger.getLogger(RootController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RootController.class.getName()).log(Level.ERROR, null, ex);
         }        
     }
     
     @RequestMapping(value = {"login.htm"},method = {RequestMethod.GET})
     public String login(){
+        Logger.getLogger(RootController.class.getName()).log(Level.ERROR," -------------------- Logger.getLogger() ");
+        LogManager.getLogger(RootController.class.getName()).info(" -------------------- LogManager.getLogger() ");
+        Logger.getRootLogger().log(Level.INFO," -------------------- Logger.getRootLogger() ");
+        System.out.println(" -------------------- SOUT ");
         return "login";
     }
     
