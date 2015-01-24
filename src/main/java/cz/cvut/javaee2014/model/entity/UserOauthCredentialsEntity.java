@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
  * @author Stenlik
  */
 @Entity
-public class UserOauthCredentials extends BaseEntity {
+public class UserOauthCredentialsEntity extends BaseEntity {
 
     private String clientId;
     private String clientSecret;

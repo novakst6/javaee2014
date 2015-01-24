@@ -23,7 +23,7 @@ public class UserEntity extends BaseEntity {
     private String password;
     private String email;
     @ManyToMany
-    private Set<UserOauthCredentials> oauth = new HashSet<UserOauthCredentials>();
+    private Set<UserOauthCredentialsEntity> oauth = new HashSet<UserOauthCredentialsEntity>();
     @ManyToMany
     private Set<UserRoleEntity> roles = new HashSet<UserRoleEntity>();
 
@@ -51,11 +51,11 @@ public class UserEntity extends BaseEntity {
         this.email = email;
     }
 
-    public Set<UserOauthCredentials> getOauth() {
+    public Set<UserOauthCredentialsEntity> getOauth() {
         return oauth;
     }
 
-    public void setOauth(Set<UserOauthCredentials> oauth) {
+    public void setOauth(Set<UserOauthCredentialsEntity> oauth) {
         this.oauth = oauth;
     }
 
