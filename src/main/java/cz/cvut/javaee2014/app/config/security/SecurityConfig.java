@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -48,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**");
+        //web.ignoring().antMatchers("/resources/**");
         web.ignoring().antMatchers("/css/**","/js/**");
         
     }
@@ -57,10 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //http.authorizeRequests().anyRequest();
         http.authorizeRequests().antMatchers("/login.htm").permitAll();
-        http.authorizeRequests().antMatchers("/resources/**").permitAll();
+        //http.authorizeRequests().antMatchers("/resources/**").permitAll();
         http.authorizeRequests().anyRequest().hasAnyRole("USER","DBA","ADMIN","ROLE_USER","ROLE_ADMIN");
         http.csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize")).disable();
-        http.csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("/api/**")).disable();
+        http.csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("/resources/**")).disable();
         http.logout().logoutUrl("/logout.htm");
         http.formLogin()
                 .usernameParameter("j_username")
