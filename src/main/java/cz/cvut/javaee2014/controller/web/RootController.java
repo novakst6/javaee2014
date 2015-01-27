@@ -12,6 +12,9 @@ import cz.cvut.javaee2014.service.repository.UserManager;
 import cz.cvut.javaee2014.service.repository.UserRoleManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -19,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -38,6 +42,50 @@ public class RootController {
     
     @Autowired
     ShaPasswordEncoder spe;
+    
+    //<editor-fold defaultstate="collapsed" desc="Basic pages">
+    
+    @RequestMapping(value = {"front"},method = {RequestMethod.GET})
+    public String front(Model model){
+        return "front";
+    }   
+    
+    @RequestMapping(value = {"front/**"},method = {RequestMethod.GET})
+    public String frontRedir(){        
+        return "redirect:/front";
+    } 
+    
+    @RequestMapping(value = {"back"},method = {RequestMethod.GET})
+    public String back(Model model){
+        return "back";
+    }  
+    
+    @RequestMapping(value = {"back/**"},method = {RequestMethod.GET})
+    public String backRedir(){        
+        return "redirect:/back";
+    } 
+    
+    @RequestMapping(value = {"admin"},method = {RequestMethod.GET})
+    public String admin(Model model, HttpServletRequest req){
+            
+        // datum a čas
+        Date date = new Date();
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+        String formattedDate = dateFormat.format(date);
+	model.addAttribute("time", formattedDate );
+        
+        // ip adresa
+        model.addAttribute("ip", req.getRemoteAddr() );
+        
+        return "admin";
+    }   
+    
+    @RequestMapping(value = {"admin/**"},method = {RequestMethod.GET})
+    public String adminRedir(){        
+        return "redirect:/admin";
+    }   
+    
+    //</editor-fold>
     
     @RequestMapping(value = {"denied.htm"},method = {RequestMethod.GET})
     public void denied(HttpServletResponse response){
