@@ -14,8 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
- * @author Stenlik
+ * Base Entity Manager
+ * 
+ * @author Stenlik & Toms
  */
 
 public abstract class BaseManager<E> implements IBaseCRUD<E> {
@@ -28,32 +29,32 @@ public abstract class BaseManager<E> implements IBaseCRUD<E> {
     public void setClass(Class<E> clazz){
         this.clazz = clazz;
     }
- 
+    
+    //<editor-fold defaultstate="collapsed" desc="Create">
+    
     @Override
-    public void add(E entity) {
+    public E create(E entity) {
         em.getCurrentSession().save(entity);
+        return entity;
     }
 
     @Override
+    public void create(List<E> entites) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public E add(E entity) {
+        return create(entity);
+    }
+    
     public void add(List<E> entites) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        create(entites);
     }
-
-    @Override
-    public void edit(E entity) {
-        em.getCurrentSession().update(entity);
-    }
-
-    @Override
-    public void delete(E entity) {
-        em.getCurrentSession().delete(entity);
-    }
-
-    @Override
-    public void delete(List<E> entities) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
+    //</editor-fold>
+ 
+    //<editor-fold defaultstate="collapsed" desc="Read">
+    
     @Override
     public E findById(Long id) {
         return (E) em.getCurrentSession().load(clazz, id);
@@ -74,6 +75,45 @@ public abstract class BaseManager<E> implements IBaseCRUD<E> {
         return em.getCurrentSession().createQuery("SELECT e FROM "+clazz.getSimpleName()+" AS e").list();
     }
     
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Update">
+    
+    @Override
+    public E update(E entity) {
+        em.getCurrentSession().update(entity);
+        return entity;
+    }
+    
+    public E edit (E entity) {
+        return update(entity);
+    }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Delete">
+    
+    @Override
+    public void delete(E entity) {
+        em.getCurrentSession().delete(entity);
+    }
+    
+    @Override
+    public void delete(Long id) {
+        em.getCurrentSession().delete(
+                findById(id)
+        );
+    }
+
+    @Override
+    public void delete(List<E> entities) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }    
+    
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Misc..">
+    
     @Override
     public void refresh(E entity){
         em.getCurrentSession().refresh(entity);
@@ -84,8 +124,6 @@ public abstract class BaseManager<E> implements IBaseCRUD<E> {
         return (E) em.getCurrentSession().merge(entity);
     }
     
-    
-    
-    
+    //</editor-fold>
     
 }

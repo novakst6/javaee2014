@@ -10,20 +10,34 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
- * @author Stenlik
+ * Base CRUD Intarface
+ * - create a update vrací entitu kvůli restu, 
+ *   aby se hned dalo ověřit ID objektu
+ * 
+ * @author Stenlik & Toms
  * @param <E>
  */
 public interface IBaseCRUD<E> extends Serializable{
-    public void add(E entity);
-    public void add(List<E> entites);
-    public void edit(E entity);
-    public void delete(E entity);
-    public void delete(List<E> entities);
+    
+    // create
+    public E create(E entity);
+    public void create(List<E> entites);
+    
+    // read
     public E findById(Long id);
     public List<E> findById(List<Long> ids);
     public List<E> find(String query, String[]... parameters);  
     public List<E> findAll();
+    
+    // update
+    public E update(E entity);
+    
+    // delete
+    public void delete(E entity);
+    public void delete(Long id);
+    public void delete(List<E> entities);
+
+    // & the company..
     public void refresh(E entity);
     public E merge(E entity);
     

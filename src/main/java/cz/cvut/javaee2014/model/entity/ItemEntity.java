@@ -9,6 +9,7 @@ import cz.cvut.javaee2014.model.entity.base.BaseEntity;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import org.hibernate.annotations.ManyToAny;
 
 /**
@@ -20,10 +21,9 @@ public class ItemEntity extends BaseEntity {
     private String name;
     private String shortText;
     private String longText;
-    @ManyToMany
-    private Set<ItemCategoryEntity> category;
-    @ManyToMany
-    private Set<PriceEntity> price;
+    @ManyToOne
+    ItemCategoryEntity category;
+    private Double price;
     @ManyToMany
     private Set<StockItemEntity> madeOf;
     @ManyToMany
@@ -55,19 +55,19 @@ public class ItemEntity extends BaseEntity {
         this.longText = longText;
     }
 
-    public Set<ItemCategoryEntity> getCategory() {
+    public ItemCategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(Set<ItemCategoryEntity> category) {
+    public void setCategory(ItemCategoryEntity category) {
         this.category = category;
     }
 
-    public Set<PriceEntity> getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Set<PriceEntity> price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

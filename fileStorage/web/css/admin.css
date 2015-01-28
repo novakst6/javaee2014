@@ -16,27 +16,38 @@ body{
 }
 
 /* Menus */
-a, .ui-button{
-	outline: none;
-	margin-right: 10px !important;
+#menuholder{
+	background-image: url("logo_small.png");
+	background-repeat: no-repeat;
+	background-position: 10px 5px;
+	padding-left: 140px;
+	min-height: 95px;
 }
-.logoImg{
-    float: left;
-    left: -5px;
-    padding-right: 15px;
-    position: relative;
-    top: -5px;
-}
-#upmenu{padding-top: 10px; margin-left: 20px; margin-bottom: 10px;}
-#upmenu a, #upmenu .ui-button-text{
+#topLevelMenuHolder{padding-top: 18px; margin-left: 20px; margin-bottom: 10px;}
+#topLevelMenuHolder a{
 	font-family: 'Open Sans', sans-serif;
-	font-size: 15px;
+	font-size: 16px;
 	font-weight: bold;
+	padding-right: 10px;
+	text-decoration: none;
+	color: black;
+	text-transform:uppercase;
 }
-#secmenu{margin-left: 20px; margin-bottom: 10px;}
-#secmenu a, #upmenu .ui-button-text{
+#topLevelMenuHolder a:hover{
+	text-decoration: underline;
+	color: #EF8C08;
+}
+#secLevelMenuHolder{margin-left: 20px; margin-bottom: 10px;}
+#secLevelMenuHolder a{
 	font-family: 'Open Sans', sans-serif;
-	font-size: 13px;
+	font-size: 14px;
+	padding-right: 10px;
+	text-decoration: none;
+	color: black;
+}
+#secLevelMenuHolder a:hover{
+	text-decoration: underline;
+	color: #EF8C08;
 }
 .smallmenu{margin-bottom: 10px;}
 .smallmenu a, #upmenu .ui-button-text{
@@ -130,26 +141,29 @@ a, .ui-button{
 	padding: 0px;
 }
 
-/* Forms */
-.appform{
+/* Form jq UI */
+.entityForm{
 	height: auto !important;
 }
-.appform fieldset{
+.entityForm fieldset{
 	border: none;
 	margin: 0px;
 	padding: 0px;
+	margin-top: 7px;
 	margin-bottom: 15px;
 }
-.appform label{
+.entityForm label{
 	display: block;
-	margin: 3px 0 3px 0;
+	margin-top: 10px;
+	margin-bottom: 5px;
 	color: #333333;
 }
-.appform input{
+.entityForm input{
 	display: block;
-	margin-bottom: 10px;
+	/*margin-bottom: 10px;*/
 	width: 98%;
 	padding: 3px;
+	
 }
 /* Nestable */
 .dd{

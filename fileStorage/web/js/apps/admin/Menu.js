@@ -114,14 +114,12 @@ var AdminMenu = Backbone.View.extend({
 
 		//		
 		this.renderTopMenu();
-
-		//
-		this.$el.fadeIn();
 	},
 	
 	// vykreslí menu první úrovně
 	renderTopMenu: function(){
 		this.topDiv.empty();
+		this.topDiv.hide();
 		
 		// 
 		for( key in adminTopLevel ){
@@ -136,16 +134,21 @@ var AdminMenu = Backbone.View.extend({
 			);
 		}
 		
+		// vyrenderujeme první kategorii, na kt. narazíme
+		this.renderSecMenu(adminSecLevel[0].parentID);
+		
 		//
-		this.renderSecMenu(1);
+		this.topDiv.fadeIn();
 	},
 	
 	// vykreslí menu 2. úrovně
 	renderSecMenu: function(id){
 		this.secDiv.empty();
+		this.secDiv.hide();
 		
 		//
 		this.actualTop = id;
+		console.log("Menu 2nd level: "+id);
 		
 		// 
 		for( key in adminSecLevel ){
@@ -160,6 +163,8 @@ var AdminMenu = Backbone.View.extend({
 			}
 		}
 		
+		//
+		this.secDiv.fadeIn();
 	},
 	
 	// načte stránku (view)

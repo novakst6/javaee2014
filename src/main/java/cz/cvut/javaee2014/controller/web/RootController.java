@@ -118,26 +118,26 @@ public class RootController {
         UserRoleEntity r1 = new UserRoleEntity();
         r1.setName("ROLE_USER");
         r1.setDescription("Role for regular user of application.");
-        urm.add(r1);
+        urm.create(r1);
         
         UserRoleEntity r2 = new UserRoleEntity();
         r2.setName("ROLE_ADMIN");
         r2.setDescription("Role for administrator of application.");
-        urm.add(r2);
+        urm.create(r2);
         
         UserEntity user1 = new UserEntity();
         user1.setLogin("stenlik");
         user1.setPassword(spe.encodePassword("123456", ""));
         user1.getRoles().add(r1);
         user1.setEmail("stenlik@gmail.com");
-        um.add(user1);
+        um.create(user1);
         
         UserEntity user2 = new UserEntity();
         user2.setLogin("stenlik2");
         user2.setPassword(spe.encodePassword("123456", ""));
         user2.getRoles().add(r2);
         user2.setEmail("stenlik2@gmail.com");
-        um.add(user2);
+        um.create(user2);
         return "index";
     }
     

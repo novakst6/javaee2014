@@ -39,7 +39,7 @@ public class UserRoleController {
     public String rolePOST(UserRoleForm formModel, ModelMap m){
         UserRoleEntity ure = new UserRoleEntity();
         ure.setName(formModel.getName());
-        urm.add(ure);
+        urm.create(ure);
         return "redirect:role.htm";
     }
     

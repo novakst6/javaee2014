@@ -76,7 +76,7 @@ public class FileUploadControllerLegacy {
             file.setPath(uploadDir + mpf.getOriginalFilename());
             file.setSize(mpf.getSize());
             file.setName(mpf.getOriginalFilename());
-            fm.add(file);
+            fm.create(file);
         }
         return "redirect:upload.htm";
     }

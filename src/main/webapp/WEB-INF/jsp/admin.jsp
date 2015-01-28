@@ -11,7 +11,8 @@
 		<meta charset="UTF-8">
 		<title>Admin - JEE Bar 2014</title>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400,300&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="files/web/css/admin.css">
+		<link rel="stylesheet" type="text/css" href="files/web/css/admin.css" />
+                <link rel="stylesheet" type="text/css" href="files/web/css/jquery-ui.min.css" />
                 <link rel="shortcut icon" href="files/web/css/fav1.ico" />
 		<script src="files/web/js/libs/require.js" type="text/javascript"></script>
 	</head>
@@ -36,16 +37,17 @@
 				urlArgs: "pVersion=" + (new Date()).getTime(),
 				paths: {
 					jquery: 'libs/jquery-1.11.1.min',
+                                        jqui: 'libs/jquery-ui.min',
 					underscore: 'libs/underscore-1.7.0.min',
 					json: 'libs/json2.min',
 					backbone: 'libs/backbone-1.1.2.min'
 					},
 				shim: {
-						'jquery': {
+						jquery: {
 							exports: '$'
 						},
-						'backbone': {
-							deps: ['jquery','underscore','json'],
+						backbone: {
+							deps: ['jquery','underscore','json','jqui'],
 							exports: 'Backbone'
 						}
 					}
@@ -53,7 +55,7 @@
 
 			// app init
 			require(['backbone'], function(){
-				Backbone.emulateJSON = true;
+				//Backbone.emulateJSON = true;
 				require(['apps/admin/Menu'], function(){  
                                     
                                         // root adresa aplikace
@@ -64,8 +66,9 @@
                                         
 					window.app = {
                                                 url: rootURL + "/",
+                                                api: fileRootURL + "/api/",
                                                 files: fileRootURL + "/files/",
-                                                pages: fileRootURL + "/files/web/js/apps/admin/",
+                                                pages: fileRootURL + "/files/web/js/apps/admin/",                                                
                                                 router: new Router(),
 						menu: new AdminMenu()
 					};
