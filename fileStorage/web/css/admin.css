@@ -32,6 +32,7 @@ body{
 	text-decoration: none;
 	color: black;
 	text-transform:uppercase;
+	outline: none;
 }
 #topLevelMenuHolder a:hover{
 	text-decoration: underline;
@@ -44,6 +45,7 @@ body{
 	padding-right: 10px;
 	text-decoration: none;
 	color: black;
+	outline: none;
 }
 #secLevelMenuHolder a:hover{
 	text-decoration: underline;
@@ -60,6 +62,76 @@ body{
     -webkit-box-shadow: 0px 0px 2px 0px #FFA500;
     box-shadow: 0px 0px 2px 0px #FFA500;
 	text-shadow: 0px 0px 1px #FFD599;
+}
+
+/* Page */
+#mainview h1{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 22px;
+	font-weight: 300;
+	margin: 0;
+	padding: 0;
+	padding-bottom: 20px;
+	line-height: 22px;
+}
+#mainview .pageSeparator{
+	border-top: 1px dashed #999999;
+	width: 100%;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+/* Page List */
+.listHolder{
+	width: 481px;
+	margin-top: 20px;
+	border: 1px solid #CCCCCC;
+	border-radius: 5px;
+	padding: 5px;
+}
+.listHolder .listItem{	
+	margin-bottom: 5px;
+}
+.listHolder .listItem:last-child{
+	margin-bottom: 0px;
+}
+.listItem .listItemId{
+	display: inline-block;
+	background-color: #DEDEDE;
+	border-radius: 3px;
+	padding: 3px;
+	width: 30px;
+	margin-right: 5px;
+}
+.listHolder .listItemName{
+	display: inline-block;
+	background-color: #DEDEDE;
+	border-radius: 3px;
+	padding: 3px;
+	width: 300px;
+	margin-right: 5px;
+}
+.listHolder a{
+	display: inline-block;
+	text-decoration: none;
+	border-radius: 3px;
+	padding: 3px;
+	padding-left: 6px;
+	padding-right: 6px;
+	width: 50px;
+	text-align: center;
+}
+.listHolder a:hover{
+	text-decoration: underline;
+}
+.listItem .listEdit{
+    background: rgb(223, 117, 20);
+    color: white;
+	margin-right: 5px;
+}
+.listItem .listDelete{
+    background: rgb(202, 60, 60);
+    color: white;
 }
 
 /* View */
@@ -164,6 +236,11 @@ body{
 	width: 98%;
 	padding: 3px;
 	
+}
+.entityForm input[type="checkbox"]{
+	display: block;
+	padding: 3px;	
+	width: inherit;
 }
 /* Nestable */
 .dd{

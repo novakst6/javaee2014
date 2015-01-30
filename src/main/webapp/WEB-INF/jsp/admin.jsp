@@ -20,9 +20,7 @@
 		<div id="frameholder">
 			<div id="centerframe">	
                                 <div id="menuholder"></div>
-				<div id="mainview">
-                                    Hello
-				</div>			
+				<div id="mainview"></div>			
 				<div id="footer" style="">
 					Čas serveru: ${time} &nbsp;&nbsp;&nbsp;&nbsp;
 					Vaše IP adresa: ${ip}		

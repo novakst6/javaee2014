@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Stenlik & Toms
  */
 
+@Transactional
 public abstract class BaseManager<E> implements IBaseCRUD<E> {
     
     @Autowired
@@ -57,7 +59,7 @@ public abstract class BaseManager<E> implements IBaseCRUD<E> {
     
     @Override
     public E findById(Long id) {
-        return (E) em.getCurrentSession().load(clazz, id);
+        return (E) em.getCurrentSession().get(clazz, id);
     }
 
     @Override
@@ -82,6 +84,7 @@ public abstract class BaseManager<E> implements IBaseCRUD<E> {
     @Override
     public E update(E entity) {
         em.getCurrentSession().update(entity);
+        //em.getCurrentSession().flush();
         return entity;
     }
     

@@ -1,12 +1,12 @@
-var SortimentModel = Backbone.Model.extend({
-	url: window.app.api + 'item',
+var CatModel = Backbone.Model.extend({
+	url: window.app.api + 'item-cat',
 	defaults: {
 		"id": null,
 		"name": "",
 		"shortText": "",
 		"longText": ""		
 	},
-	name: "Položka sortimentu",
+	name: "Kategorie sortimentu",
 	names: {
 		"name": "Název",
 		"shortText": "Krátký text",
@@ -14,14 +14,14 @@ var SortimentModel = Backbone.Model.extend({
 	}
 });
 
-var SortimentCollection = Backbone.Collection.extend({
-	url: window.app.api + 'item',
+var CatCollection = Backbone.Collection.extend({
+	url: window.app.api + 'item-cat',
     model: SortimentModel
 });
 
 var SortimentView = Backbone.View.extend({
 
-	className: "pageholder",
+	el: "#mainview",
 	name: "Sortiment",
 	
 	model: null, 
@@ -35,11 +35,6 @@ var SortimentView = Backbone.View.extend({
 		this.createDialog();
 	
 		this.render();
-	},
-	
-	destroy: function(){
-		this.dialog.dialog('destroy').remove();
-		this.remove();
 	},
 	
 	render: function(){

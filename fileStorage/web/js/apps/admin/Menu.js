@@ -6,8 +6,8 @@ var adminTopLevel = [
 
 var adminSecLevel = [
 	{title: "Sortiment", id: "items", parentID: "admin-tasks", path: "basic", view: "SortimentView"},
-	{title: "Uživatelé", id: "users", parentID: "admin-tasks"},
-	{title: "Terminály", id: "terminals", parentID: "admin-tasks"}
+	{title: "Kategorie", id: "cats", parentID: "admin-tasks", path: "basic", view: "CatView"},
+	{title: "Terminály", id: "terminals", parentID: "admin-tasks", path: "basic", view: "TermPage"}
 ];
 
 var Router = Backbone.Router.extend({
@@ -76,19 +76,26 @@ var AdminMenu = Backbone.View.extend({
 		console.log("Setting up click handling");
 	
 		$(document).on("click", "a:not([data-bypass])", function(evt){
-			console.log("Handling click");
+			//console.log("Handling click");
 			
 			// srovnáme jestli odkaz začíná rootem naší aplikace
 			var href = $(this).attr("href");
 			var root = window.app.url;
 			var hrefroot = href.slice(0, root.length);
 			
-			console.log("href: "+href);
-			console.log("root: "+root);
-			console.log("hrefroot: "+hrefroot);
+			//console.log("href: "+href);
+			//console.log("root: "+root);
+			//console.log("hrefroot: "+hrefroot);
+			
+			// href je #
+			if(href == "#"){
+				//console.log("Click is local action");
+				return;
+			}
 
 			// když jo, tak přesměrujeme samy v backbone, jinak necháme dokončit defaultně
 			if (hrefroot == root) {
+				//console.log("Click is local");
 				evt.preventDefault();
 				
 				// zjistíme relativní adresu
@@ -96,6 +103,8 @@ var AdminMenu = Backbone.View.extend({
 				console.log("rel: "+rel);
 				
 				Backbone.history.navigate(rel, true);
+			} else {
+				//console.log("Click is global");
 			}
 		});
 
@@ -173,60 +182,26 @@ var AdminMenu = Backbone.View.extend({
 		//
 		this.actualSec = id;
 		
-		//
+		// najdeme objekt v konfiguraci odpovídající vybrané stránce
 		var obj = _.find(adminSecLevel, function(itm){ return (itm.id == id); });
 		console.log("Menu loading page: " + obj.path + "/" + obj.view + ".js");
 		
-		//
+		// uklidíme minulou stránku
+		if(this.pageView != null){
+			this.pageView.destroy();
+		}
+		
+		// naloadujeme nový view a instancujeme
 		var thisObj = this;
 		require([window.app.pages + obj.path + "/" + obj.view + ".js"], function(){ 
-			thisObj.pageView = new window[obj.view];		
+			thisObj.pageView = new window[obj.view];	
+			$("#mainview").append(thisObj.pageView.$el);
 		});
 		
 	},
 	
 	loadAction: function(id){
 		console.log("Menu loading action: " + id);
-	},
-	
-	
-	update: function(){
-		
-		// načteme ze serveru stav přihlášení
-		this.model.fetch({
-			success: function(){
-				this.render();
-			}
-		});
-	},
-	
-	
-	// --- extrenal events handlers
-	onRouterEvent: function(route, router){
-	
-		console.log("onRouterEvent");
-		//console.log(route);
-		//console.log(router);
-	
-		// update server info model
-		this.update();
-	},
-	
-	// --- UI event handlers
-	onRegClick: function(){
-		if(window.app['regForm'] == undefined){
-			require(['index/view/RegisterUserView'], function(){
-				window.app.regForm = new RegisterUserView();
-			});
-		}else{
-			window.app.regForm.render();
-		}
-	},
-	
-	onLoginClick: function(evt){
-		evt.preventDefault();
-		this.model.set("userclick", "yes");
-		this.update();
 	}
 	
 });

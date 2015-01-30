@@ -69,6 +69,11 @@ public class PersistenceConfig {
                 setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
                 setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
                 setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+                
+                setProperty("hibernate.connection.useUnicode", env.getProperty("hibernate.connection.useUnicode"));
+                setProperty("hibernate.connection.characterEncoding", env.getProperty("hibernate.connection.characterEncoding"));
+                setProperty("hibernate.connection.charSet", env.getProperty("hibernate.connection.charSet"));
+                 
                 setProperty("hibernate.query.substitutions", "true 1, false 0");
                 setProperty("hibernate.globally_quoted_identifiers", "true");
             }

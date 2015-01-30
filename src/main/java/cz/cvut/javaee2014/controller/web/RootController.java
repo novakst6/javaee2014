@@ -13,18 +13,28 @@ import cz.cvut.javaee2014.service.repository.UserRoleManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.log4j.spi.RootLogger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
@@ -141,4 +151,46 @@ public class RootController {
         return "index";
     }
     
+    /*@ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    String handleException(MethodArgumentNotValidException ex) {
+        
+        RootLogger.getRootLogger().info("BAD REQUEST");
+        
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+        List<ObjectError> globalErrors = ex.getBindingResult().getGlobalErrors();
+        
+        List<String> errors = new ArrayList<>(fieldErrors.size() + globalErrors.size());        
+        String error;
+        for (FieldError fieldError : fieldErrors) {
+            error = fieldError.getField() + ", " + fieldError.getDefaultMessage();
+            errors.add(error);
+        }
+        for (ObjectError objectError : globalErrors) {
+            error = objectError.getObjectName() + ", " + objectError.getDefaultMessage();
+            errors.add(error);
+        }
+        
+        String resp = "";
+        for(String s : errors){
+            resp += s + "\n";
+        }
+        
+        Logger.getLogger(RootController.class.getName()).info( "BAD REQUEST, info:" );
+        Logger.getLogger(RootController.class.getName()).info( resp );
+        
+        return resp;
+    } */
+    
+    /*@ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    String handleException(Exception ex) {
+        
+        RootLogger.getRootLogger().info("BAD REQUEST");
+        
+        
+        return "this is bad";
+    }*/
 }
