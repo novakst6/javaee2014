@@ -59,11 +59,14 @@
                                     
                                         // root adresa stránky
                                         var pageURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                                        var protocolLessPageURL = window.location.host + window.location.pathname;
                                         
-                                        // root adresa ap
+                                        // root adresa aplikace
                                         var rootURL = pageURL.substring(0, pageURL.lastIndexOf('/'));
+                                        var protocolLessRootURL  = protocolLessPageURL.substring(0, protocolLessPageURL.lastIndexOf('/'));
                                         
 					window.app = {
+                                                protocolLessRoot: protocolLessRootURL + "/",
                                                 root: rootURL + "/",
                                                 url: pageURL + "/",
                                                 api: rootURL + "/api/",
