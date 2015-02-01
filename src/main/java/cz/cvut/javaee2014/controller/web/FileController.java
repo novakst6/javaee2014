@@ -16,6 +16,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Properties;
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -266,24 +269,42 @@ public class FileController {
 
 
             // entita - obrázek
+            ImageEntity imageEntity;
+            boolean cleanupOldFile = false;
+            FileEntity oldFileEntity = null;
+                    
             if(id == -1){
 
                 // nový
-                ImageEntity imageEntity = new ImageEntity();
+                imageEntity = new ImageEntity();
                 imageEntity.setName(name);
                 if(fileEntity != null){imageEntity.setOriginal(fileEntity);}
                 imageManager.add(imageEntity);
-                
-                // batch
-                //SpringApplication.run(
-                //    BatchConfiguration.class, ""+imageEntity.getId());
+
             } else {
 
                 // update
-                ImageEntity imageEntity = imageManager.findById(id);
+                imageEntity = imageManager.findById(id);
+                
+                cleanupOldFile = true;
+                oldFileEntity = imageEntity.getOriginal();
+                
                 imageEntity.setName(name);
                 if(fileEntity != null){imageEntity.setOriginal(fileEntity);}
                 imageManager.update(imageEntity);
+            }
+            
+            // batch
+            if(fileEntity != null){
+                JobOperator job = BatchRuntime.getJobOperator(); 
+                Properties props = new Properties();
+                props.setProperty("image_id", ""+imageEntity.getId());
+                
+                if(cleanupOldFile){
+                    props.setProperty("old_file_id", ""+oldFileEntity.getId());
+                }
+                
+                job.start("imageJob", props);
             }
 
             return "OK";
