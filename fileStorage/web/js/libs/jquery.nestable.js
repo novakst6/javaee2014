@@ -38,8 +38,10 @@
             placeClass      : 'dd-placeholder',
             noDragClass     : 'dd-nodrag',
             emptyClass      : 'dd-empty',
-            expandBtnHTML   : '<button data-action="expand" type="button">Expand</button>',
-            collapseBtnHTML : '<button data-action="collapse" type="button">Collapse</button>',
+            //expandBtnHTML   : '<button data-action="expand" type="button">Expand</button>',
+            //collapseBtnHTML : '<button data-action="collapse" type="button">Collapse</button>',            
+			expandBtnHTML   : '<button data-action="expand" type="button">&nbsp;()</button>',
+            collapseBtnHTML : '<button data-action="collapse" type="button">&nbsp;()</button>',
             group           : 0,
             maxDepth        : 5,
             threshold       : 20

@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import org.hibernate.annotations.ManyToAny;
 
 /**
  *
@@ -28,8 +27,8 @@ public class ItemEntity extends BaseEntity {
     private Set<StockItemEntity> madeOf;
     @ManyToMany
     private Set<TerminalTypeEntity> terminalTypes;
-    @ManyToMany
-    private Set<FileEntity> photos;
+    @ManyToOne
+    private FileEntity image;
 
     public String getName() {
         return name;
@@ -87,12 +86,12 @@ public class ItemEntity extends BaseEntity {
         this.terminalTypes = terminalTypes;
     }
 
-    public Set<FileEntity> getPhotos() {
-        return photos;
+    public FileEntity getImage() {
+        return image;
     }
 
-    public void setPhotos(Set<FileEntity> photos) {
-        this.photos = photos;
+    public void setImage(FileEntity image) {
+        this.image = image;
     }
     
     

@@ -30,6 +30,7 @@
 				paths: {
 					jquery: 'libs/jquery-1.11.1.min',
                                         jqui: 'libs/jquery-ui.min',
+                                        jqnest: 'libs/jquery.nestable',
 					underscore: 'libs/underscore-1.7.0.min',
 					json: 'libs/json2.min',
 					backbone: 'libs/backbone-1.1.2.min'
@@ -38,8 +39,14 @@
 						jquery: {
 							exports: '$'
 						},
+                                                jqnest: {
+                                                    deps: ['jquery']
+                                                },
+                                                jqui: {
+                                                    deps: ['jquery']
+                                                },
 						backbone: {
-							deps: ['jquery','underscore','json','jqui'],
+							deps: ['underscore','json','jqui','jqnest'],
 							exports: 'Backbone'
 						}
 					}

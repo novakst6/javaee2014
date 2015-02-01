@@ -20,9 +20,11 @@ public class ItemCategoryEntity extends BaseEntity {
     private String name;
     private String memo;
     @ManyToOne
+    private ImageEntity image;
+    @ManyToOne
     private ItemCategoryEntity parent;
-    @OneToMany(mappedBy = "parent")
-    private Set<ItemCategoryEntity> childern;
+    /*@OneToMany(mappedBy = "parent")
+    private Set<ItemCategoryEntity> children;*/
 
     public String getName() {
         return name;
@@ -48,8 +50,16 @@ public class ItemCategoryEntity extends BaseEntity {
         this.parent = parent;
     }
 
-    public Set<ItemCategoryEntity> getChildern() {
-        return childern;
+    /*public Set<ItemCategoryEntity> getChildren() {
+        return children;
+    }*/
+
+    public ImageEntity getImage() {
+        return image;
+    }
+
+    public void setImage(ImageEntity image) {
+        this.image = image;
     }
     
     
