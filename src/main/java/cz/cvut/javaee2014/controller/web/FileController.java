@@ -5,7 +5,10 @@
  */
 package cz.cvut.javaee2014.controller.web;
 
-import cz.cvut.javaee2014.app.config.ApplicationConfig;
+import cz.cvut.javaee2014.model.entity.FileEntity;
+import cz.cvut.javaee2014.model.entity.ImageEntity;
+import cz.cvut.javaee2014.service.repository.FileManager;
+import cz.cvut.javaee2014.service.repository.ImageManager;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
@@ -52,12 +56,20 @@ public class FileController {
     @Value("${filesys.web}")
     private String webDirectory;
     
-    public String getUploadDirectory(){
-        return rootDirectory + uploadDirectory;
+    public String getAbsUploadDirectory(){
+        return rootDirectory + File.separator + uploadDirectory;
     }
     
-    public String getWebDirectory(){
-        return rootDirectory + webDirectory;
+    public String getAbsWebDirectory(){
+        return rootDirectory + File.separator + webDirectory;
+    }
+    
+    public String getRelUploadDirectory(){
+        return uploadDirectory;
+    }
+    
+    public String getRelDirectory(){
+        return webDirectory;
     }
     
     @Bean
@@ -110,8 +122,24 @@ public class FileController {
         if (dotIndex >= 0) {
             extension = theFile.getName().substring( dotIndex + 1);
         }
-        if(extension.equals("js")){
-            response.setHeader("Content-Type", "application/x-javascript");
+        switch(extension){
+            case "js":
+                response.setHeader("Content-Type", "application/x-javascript");
+                break;
+            case "ico":
+                response.setHeader("Content-Type", "image/x-icon");
+                break;
+            case "css":
+                response.setHeader("Content-Type", "text/css");
+                break;
+            case "png":
+                response.setHeader("Content-Type", "image/png");
+                break;
+            case "jpg":
+                response.setHeader("Content-Type", "image/jpeg");
+                break;
+            default:
+                //
         }
 
         // --- poslat soubor nebo not found
@@ -137,8 +165,9 @@ public class FileController {
     
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="( Testovací upload formulář )">
     
-    @RequestMapping(value = {"uploadx.htm"},method = {RequestMethod.GET})
+    @RequestMapping(value = {"upload.htm"},method = {RequestMethod.GET})
     public void uploadPage(HttpServletResponse response){
         response.setHeader("Content-Type", "text/html");
         response.setHeader("success", "yes");
@@ -164,51 +193,103 @@ public class FileController {
         } catch (IOException ex) {
             Logger.getLogger(RootController.class.getName()).log(Level.WARN, null, ex);
         }        
-    }
-    
+    }   
+
     /*@RequestMapping(value="/upload", method=RequestMethod.GET)
     public @ResponseBody String provideUploadInfo() {
         return "You can upload a file by posting to this same URL.";
     }*/
+    
+    //</editor-fold>
 
+    @Autowired
+    private FileManager fileManager;
+    
+    @Autowired
+    private ImageManager imageManager;
+    
     /**
      * Příchozí file upload - uložíme soubor
      * @param name
-     * @param file
+     * @param id
+     * @param incomingFile
      * @return 
      */
-    @RequestMapping(value="/uploadx", method = {RequestMethod.POST})
-    public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
-            @RequestParam("file") MultipartFile file){
+    @RequestMapping(value="/upload", method = {RequestMethod.POST})
+    public @ResponseBody String handleFileUpload(
+            @RequestParam("name") String name,
+            @RequestParam("id") Long id,
+            @RequestParam("file") MultipartFile incomingFile){
         
-        if (!file.isEmpty()) {
-            try {
-                
-                // nový soubor
-                String newFilename = file.getOriginalFilename(); // používá původní název souboru vč. přípony
-                //String newFilename = name + "-uploaded"; // používá údaj z formuláře
-                File outFile = new File(getUploadDirectory() + "/" + newFilename);  
-                
-                // vytvoříme adresáře
-                if(!outFile.getParentFile().exists()){
-                    outFile.getParentFile().mkdirs();
-                }
-                
-                // kopírování dat
-                byte[] bytes = file.getBytes();                
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(outFile));
-                stream.write(bytes);
-                stream.close();
-                
-                // ok
-                return "You successfully uploaded " + name + " into " + name + "-uploaded !\n" +
-                       "Original filename: " + file.getOriginalFilename() + "\n" + 
-                       "Uploaded file path: " + outFile.getAbsolutePath() + "\n";
-            } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
+        try {
+
+
+            // --- Přidání souboru
+            FileEntity fileEntity = null;                
+            if( incomingFile != null ){
+                if( !incomingFile.isEmpty()){
+
+                    // nový soubor
+                    String newFilename = incomingFile.getOriginalFilename(); // používá původní název souboru vč. přípony
+
+                    // cesty
+                    String relPath = getRelUploadDirectory() + "/" + newFilename;
+                    String absPath = getAbsUploadDirectory() + "/" + newFilename;
+
+                    //
+                    File newFile = new File(absPath);  
+
+                    // vytvoříme adresáře
+                    if(!newFile.getParentFile().exists()){
+                        newFile.getParentFile().mkdirs();
+                    }
+
+                    // kopírování dat
+                    byte[] bytes = incomingFile.getBytes();                
+                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(newFile));
+                    stream.write(bytes);
+                    stream.close();
+
+                    // ok
+                    /*return "You successfully uploaded " + name + " into " + name + "-uploaded !\n" +
+                           "Original filename: " + file.getOriginalFilename() + "\n" + 
+                           "Uploaded file path: " + outFile.getAbsolutePath() + "\n";*/
+
+                    // entita - nový soubor
+                    fileEntity = new FileEntity();
+                    fileEntity.setFileName(newFile.getName());
+                    fileEntity.setFilePath(relPath);
+                    fileEntity.setFileSize(newFile.length());
+                    fileManager.add(fileEntity);
+                }                
             }
-        } else {
-            return "You failed to upload " + name + " because the file was empty.";
+
+
+            // entita - obrázek
+            if(id == -1){
+
+                // nový
+                ImageEntity imageEntity = new ImageEntity();
+                imageEntity.setName(name);
+                if(fileEntity != null){imageEntity.setOriginal(fileEntity);}
+                imageManager.add(imageEntity);
+                
+                // batch
+                //SpringApplication.run(
+                //    BatchConfiguration.class, ""+imageEntity.getId());
+            } else {
+
+                // update
+                ImageEntity imageEntity = imageManager.findById(id);
+                imageEntity.setName(name);
+                if(fileEntity != null){imageEntity.setOriginal(fileEntity);}
+                imageManager.update(imageEntity);
+            }
+
+            return "OK";
+
+        } catch (Exception e) {
+            return "Exception in upload: " + name + " => " + e.getMessage();
         }
     }
 

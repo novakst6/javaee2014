@@ -7,6 +7,7 @@ var adminTopLevel = [
 var adminSecLevel = [
 	{title: "Sortiment", id: "items", parentID: "admin-tasks", path: "basic", view: "SortimentView"},
 	{title: "Kategorie", id: "cats", parentID: "admin-tasks", path: "basic", view: "CatView"},
+	{title: "Obrázky", id: "images", parentID: "admin-tasks", path: "basic", view: "ImageView"},
 	{title: "Terminály", id: "terminals", parentID: "admin-tasks", path: "basic", view: "TermPage"}
 ];
 

@@ -17,4 +17,5 @@ public class MyMySQLDialect extends MySQL5Dialect{
     public String getTableTypeString() {
         return " DEFAULT CHARSET=utf8";
     }
+    
 }

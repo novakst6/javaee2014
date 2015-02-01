@@ -15,26 +15,34 @@ import javax.persistence.Entity;
  */
 @Entity
 public class FileEntity extends BaseEntity {
-    private String name;
-    private Long size;
+    
+    private String fileName;
+    private String filePath;
+    private Long fileSize;        
     private String mimeType;
-    private String path;
-    private String hash;
 
-    public String getName() {
-        return name;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public Long getSize() {
-        return size;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setSize(Long size) {
-        this.size = size;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public Long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(Long fileSize) {
+        this.fileSize = fileSize;
     }
 
     public String getMimeType() {
@@ -45,20 +53,4 @@ public class FileEntity extends BaseEntity {
         this.mimeType = mimeType;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-    
 }

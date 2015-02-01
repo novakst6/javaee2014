@@ -1,20 +1,14 @@
-<%-- 
-    Document   : admin
-    Created on : 22.1.2015, 17:16:43
-    Author     : Toms
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>Admin - JEE Bar 2014</title>
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400,300&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="files/web/css/admin.css" />
+                <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400,300&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+                <link rel="stylesheet" type="text/css" href="files/web/css/admin.css" />
                 <link rel="stylesheet" type="text/css" href="files/web/css/jquery-ui.min.css" />
-                <link rel="shortcut icon" href="files/web/css/fav1.ico" />
 		<script src="files/web/js/libs/require.js" type="text/javascript"></script>
+                <link rel="shortcut icon" type="image/x-icon" href="files/web/css/fav1.ico?v=11" />
 	</head>
 	<body>
 		<div id="frameholder">
@@ -54,22 +48,25 @@
 			// app init
 			require(['backbone'], function(){
 				//Backbone.emulateJSON = true;
-				require(['apps/admin/Menu'], function(){  
+				require(['apps/admin/Menu'], function(){
                                     
-                                        // root adresa aplikace
-                                        var rootURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                                        // root adresa stránky
+                                        var pageURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
                                         
-                                        // root adresa umístění souborů
-                                        var fileRootURL = rootURL.substring(0, rootURL.lastIndexOf('/'));
+                                        // root adresa ap
+                                        var rootURL = pageURL.substring(0, pageURL.lastIndexOf('/'));
                                         
 					window.app = {
-                                                url: rootURL + "/",
-                                                api: fileRootURL + "/api/",
-                                                files: fileRootURL + "/files/",
-                                                pages: fileRootURL + "/files/web/js/apps/admin/",                                                
+                                                root: rootURL + "/",
+                                                url: pageURL + "/",
+                                                api: rootURL + "/api/",
+                                                files: rootURL + "/files/",
+                                                pages: rootURL + "/files/web/js/apps/admin/",                                                
                                                 router: new Router(),
 						menu: new AdminMenu()
 					};
+                                        
+                                        console.log("Application Root URL: " + window.app.root);
                                         console.log("Document URL: " + window.app.url);
                                         console.log("Document File Root URL: " + window.app.files);
                                         console.log("Document Page Root URL: " + window.app.pages);

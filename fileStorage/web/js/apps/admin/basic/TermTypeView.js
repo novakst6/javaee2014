@@ -270,14 +270,12 @@ var TermTypeView = Backbone.View.extend({
 			success: function(model, response, options){
 				console.log("Model save OK");
 				thisObject.dialog.dialog("close");
+				thisObject.collection.fetch();
 			},
 			error: function(model, response, options){
 				console.log("Model save ERROR");
 			}
 		});	
-		
-		//
-		this.collection.fetch();
 	}
 	
 });

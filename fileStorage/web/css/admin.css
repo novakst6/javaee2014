@@ -242,6 +242,127 @@ body{
 	padding: 3px;	
 	width: inherit;
 }
+
+/* Image Upload */
+.imageformholder{
+	background-color: #f3f3f3;
+	border-radius: 4px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+input.fileInputField{
+	display: none;
+}
+label.fileInputLabel{
+	/*display: none;*/
+}
+#imgBrowse{
+	margin-top: 10px;
+	margin-bottom: 60px;
+}
+#fileInputArea{
+	width: 400px;
+	height: 300px;
+	border: 1px blue dashed;
+}
+.third{
+	float: left;
+	width: 31%;
+	margin-right: 15px;
+}
+#uploadThird1{
+	float:left;
+}
+#uploadThird2{
+	margin:0 auto;
+}
+#uploadThird3{
+	float:right;
+}
+#uploadThird1 button{
+	margin-right: 10px;
+}
+.labelLike{
+	padding-bottom: 4px;
+}
+#prewImageDiv, #origImageDiv, .imageListHolder .listItemImage{
+	width: 300px;
+	height: 200px;	
+	color: #999999;
+	background-color: #ffffff;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 200px;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: cover;
+}
+#prewImageDiv{
+	border: 1px dashed orange;
+}
+#prewImageDiv.dragIn{
+	border: 1px solid orange;
+	background-color: #FFDA99;
+}
+#prewImageDiv.imageIn{
+	border: none;
+}
+
+/* Image List */
+.imageListHolder{
+	width: 100%;
+	margin-top: 20px;
+}
+.imageListHolder .imageListItem{	
+	display: inline-block;
+	width: 294px;
+	margin-bottom: 5px;
+	background-color: #DEDEDE;
+	padding: 5px;
+	border-radius: 5px;
+	margin-right: 9px;
+}
+.imageListHolder .listItem:last-child{
+	margin-bottom: 0px;
+}
+.imageListItem .listItemId{
+	display: inline-block;
+}
+.imageListItem .listItemName{
+	display: inline-block;
+	font-weight: bold;
+	margin-left: 10px;
+}
+.imageListItem  .listItemImage{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width: 294px;
+	height: 196px;	
+}
+.imageListHolder a{
+	display: inline-block;
+	text-decoration: none;
+	border-radius: 3px;
+	padding: 3px;
+	padding-left: 6px;
+	padding-right: 6px;
+	width: 50px;
+	text-align: center;
+}
+.imageListHolder a:hover{
+	text-decoration: underline;
+}
+.imageListHolder .listEdit{
+    background: rgb(223, 117, 20);
+    color: white;
+	margin-right: 5px;
+}
+.imageListHolder .listDelete{
+    background: rgb(202, 60, 60);
+    color: white;
+}
+
 /* Nestable */
 .dd{
 	float: none !important;

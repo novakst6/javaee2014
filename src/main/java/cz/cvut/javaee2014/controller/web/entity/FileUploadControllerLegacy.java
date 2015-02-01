@@ -70,13 +70,13 @@ public class FileUploadControllerLegacy {
                 e.printStackTrace();
             }
 
-            FileEntity file = new FileEntity();
+            /*FileEntity file = new FileEntity();
             file.setHash(md5);
             file.setMimeType(mpf.getContentType());
             file.setPath(uploadDir + mpf.getOriginalFilename());
             file.setSize(mpf.getSize());
             file.setName(mpf.getOriginalFilename());
-            fm.create(file);
+            fm.create(file);*/
         }
         return "redirect:upload.htm";
     }
@@ -85,9 +85,9 @@ public class FileUploadControllerLegacy {
     public String downloadGET(HttpServletResponse response, @RequestParam("id") Long id) {
         FileEntity mimeFile = fm.findById(id);
         try {
-            FileInputStream fis = new FileInputStream(mimeFile.getPath());
+            FileInputStream fis = new FileInputStream(mimeFile.getFilePath());
             response.setContentType(mimeFile.getMimeType());
-            response.setHeader("Content-disposition", "attachment; filename=\"" + mimeFile.getName() + "\"");
+            response.setHeader("Content-disposition", "attachment; filename=\"" + mimeFile.getFilePath() + "\"");
             FileCopyUtils.copy(fis, response.getOutputStream());
         } catch (IOException e) {
             // TODO Auto-generated catch block
