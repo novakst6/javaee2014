@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans
-    xmlns:beans="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:batch="http://www.springframework.org/schema/batch"
-    xsi:schemaLocation="
-        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-   <beans:bean id="myTestTasklet" class="cz.cvut.javaee2014.service.batch.MyTestTasklet"/>
-    
-    <batch:job id="imageJob">
-        <batch:step id="st1">
-            <batch:tasklet ref="myTestTasklet"/>
-        </batch:step>
-    </batch:job>
-</beans:beans>
+<job id="imageJob">
+        <step id="st1">
+            <batchlet ref="myTestTasklet"/>
+        </step>
+    </job>

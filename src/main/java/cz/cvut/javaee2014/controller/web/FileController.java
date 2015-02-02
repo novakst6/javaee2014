@@ -311,6 +311,7 @@ public class FileController {
             return "OK";
 
         } catch (Exception e) {
+            e.printStackTrace();
             return "Exception in upload: " + name + " => " + e.getMessage();
         }
     }

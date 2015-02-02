@@ -5,26 +5,45 @@
  */
 package cz.cvut.javaee2014.service.batch;
 
+import cz.cvut.javaee2014.app.config.ApplicationConfig;
+import cz.cvut.javaee2014.app.config.ApplicationContextProvider;
+import cz.cvut.javaee2014.app.config.WebAppInitializer;
+import cz.cvut.javaee2014.model.entity.UserEntity;
+import cz.cvut.javaee2014.service.repository.UserManager;
+import java.util.List;
+import javax.batch.api.AbstractBatchlet;
 import org.apache.log4j.Logger;
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.access.BeanFactoryLocator;
+import org.springframework.beans.factory.access.BeanFactoryReference;
+import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Toms
  */
-
-public class MyTestTasklet implements Tasklet{
+public class MyTestTasklet extends AbstractBatchlet{
 
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+    public String process() throws Exception {
+        ApplicationContext context = ApplicationContextProvider.getApplicationContext();
+        UserManager um = (UserManager)context.getBean(UserManager.class);
+        Logger.getRootLogger().info("UM "+um);
+        List<UserEntity> findAll = um.findAll();
+        Logger.getRootLogger().info("UM "+findAll);
         Logger.getRootLogger().info(" ---------- Batch: Hello tasklet!");
-        return RepeatStatus.FINISHED;
+        return "OK";
     }
+
+    
+//    @Override
+//    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+//        Logger.getRootLogger().info(" ---------- Batch: Hello tasklet!");
+//        return RepeatStatus.FINISHED;
+//    }
 
 
 }
