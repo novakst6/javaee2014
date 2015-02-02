@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Properties;
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -293,7 +295,8 @@ public class FileController {
             }
             
             // batch
-            /*if(fileEntity != null){
+            if(fileEntity != null){
+ 
                 JobOperator job = BatchRuntime.getJobOperator(); 
                 Properties props = new Properties();
                 props.setProperty("image_id", ""+imageEntity.getId());
@@ -303,7 +306,7 @@ public class FileController {
                 }
                 
                 job.start("imageJob", props);
-            }*/
+            }
 
             return "OK";
 
