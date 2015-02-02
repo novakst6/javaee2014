@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -21,6 +22,7 @@ public class UserEntity extends BaseEntity {
     
     private String login;
     private String password;
+    @NotEmpty
     private String email;
     @ManyToMany
     private Set<UserOauthCredentialsEntity> oauth = new HashSet<UserOauthCredentialsEntity>();
