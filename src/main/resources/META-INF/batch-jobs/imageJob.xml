@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="imageJob">
+        <step id="st1">
+            <batchlet ref="myTestTasklet"/>
+        </step>
+    </job>

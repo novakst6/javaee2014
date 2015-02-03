@@ -8,7 +8,7 @@
                 <link rel="stylesheet" type="text/css" href="files/web/css/admin.css" />
                 <link rel="stylesheet" type="text/css" href="files/web/css/jquery-ui.min.css" />
 		<script src="files/web/js/libs/require.js" type="text/javascript"></script>
-                <link rel="shortcut icon" type="image/x-icon" href="files/web/css/fav1.ico?v=11" />
+                <link id="favicon" rel="shortcut icon" type="image/x-icon" href="files/web/css/fav1.ico?v=11" />
 	</head>
 	<body>
 		<div id="frameholder">

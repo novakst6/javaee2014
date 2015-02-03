@@ -8,6 +8,7 @@ package cz.cvut.javaee2014.model.entity;
 import cz.cvut.javaee2014.model.entity.base.BaseEntity;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -17,23 +18,17 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class ItemOrderEntity extends BaseEntity {
-    private AccountEntity onAccount;
+    //private AccountEntity onAccount;
+    @ManyToOne
     private ItemEntity item;
-    private Integer quantity;
+    //private Integer quantity;
     private String note;
     private Integer status;
-    @Temporal(TemporalType.TIMESTAMP)
+    private String account;
+    /*@Temporal(TemporalType.TIMESTAMP)
     private Date timeOrdered;
     @Temporal(TemporalType.TIMESTAMP)
-    private Date timeDelivered;
-
-    public AccountEntity getOnAccount() {
-        return onAccount;
-    }
-
-    public void setOnAccount(AccountEntity onAccount) {
-        this.onAccount = onAccount;
-    }
+    private Date timeDelivered;*/
 
     public ItemEntity getItem() {
         return item;
@@ -41,14 +36,6 @@ public class ItemOrderEntity extends BaseEntity {
 
     public void setItem(ItemEntity item) {
         this.item = item;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 
     public String getNote() {
@@ -67,21 +54,13 @@ public class ItemOrderEntity extends BaseEntity {
         this.status = status;
     }
 
-    public Date getTimeOrdered() {
-        return timeOrdered;
+    public String getAccount() {
+        return account;
     }
 
-    public void setTimeOrdered(Date timeOrdered) {
-        this.timeOrdered = timeOrdered;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
-    public Date getTimeDelivered() {
-        return timeDelivered;
-    }
-
-    public void setTimeDelivered(Date timeDelivered) {
-        this.timeDelivered = timeDelivered;
-    }
-    
     
 }

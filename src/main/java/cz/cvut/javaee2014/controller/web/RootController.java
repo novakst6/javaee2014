@@ -8,6 +8,7 @@ package cz.cvut.javaee2014.controller.web;
 
 import cz.cvut.javaee2014.model.entity.UserEntity;
 import cz.cvut.javaee2014.model.entity.UserRoleEntity;
+import cz.cvut.javaee2014.model.entity.form.TestValidate;
 import cz.cvut.javaee2014.service.repository.UserManager;
 import cz.cvut.javaee2014.service.repository.UserRoleManager;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.AssertTrue;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -27,10 +30,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,7 +61,17 @@ public class RootController {
     //<editor-fold defaultstate="collapsed" desc="Basic pages">
     
     @RequestMapping(value = {"front"},method = {RequestMethod.GET})
-    public String front(Model model){
+    public String front(Model model, HttpServletRequest req){
+        
+        // datum a čas
+        Date date = new Date();
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+        String formattedDate = dateFormat.format(date);
+	model.addAttribute("time", formattedDate );
+        
+        // ip adresa
+        model.addAttribute("ip", req.getRemoteAddr() );
+        
         return "front";
     }   
     
@@ -66,7 +81,17 @@ public class RootController {
     } 
     
     @RequestMapping(value = {"back"},method = {RequestMethod.GET})
-    public String back(Model model){
+    public String back(Model model, HttpServletRequest req){
+        
+        // datum a čas
+        Date date = new Date();
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+        String formattedDate = dateFormat.format(date);
+	model.addAttribute("time", formattedDate );
+        
+        // ip adresa
+        model.addAttribute("ip", req.getRemoteAddr() );
+        
         return "back";
     }  
     
@@ -123,6 +148,14 @@ public class RootController {
         return "login";
     }
     
+//    @RequestMapping(value = "valid.htm", method = RequestMethod.POST)
+//    public String testValidate(@Valid @ModelAttribute("model") TestValidate model, BindingResult err){
+//        if(err.hasErrors()){
+//            System.out.println("ERROR");
+//        }
+//        return null;
+//    }
+    
     @RequestMapping(value = {"/"},method = {RequestMethod.GET})
     public String index(){
         UserRoleEntity r1 = new UserRoleEntity();
@@ -151,6 +184,8 @@ public class RootController {
         return "index";
     }
     
+    
+
     /*@ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -193,4 +228,6 @@ public class RootController {
         
         return "this is bad";
     }*/
+    
+    
 }

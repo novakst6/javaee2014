@@ -63,4 +63,8 @@ public class ImageEntity extends BaseEntity {
         this.original = original;
     }
 
+    public void setSmall(FileEntity small) {
+        this.small = small;
+    }
+
 }

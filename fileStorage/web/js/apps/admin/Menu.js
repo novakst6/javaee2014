@@ -5,7 +5,7 @@ var adminTopLevel = [
 ];
 
 var adminSecLevel = [
-	{title: "Sortiment", id: "items", parentID: "admin-tasks", path: "basic", view: "SortimentView"},
+	{title: "Sortiment", id: "items", parentID: "admin-tasks", path: "basic", view: "ItemView"},
 	{title: "Kategorie", id: "cats", parentID: "admin-tasks", path: "basic", view: "CatView"},
 	{title: "Obrázky", id: "images", parentID: "admin-tasks", path: "basic", view: "ImageView"},
 	{title: "Terminály", id: "terminals", parentID: "admin-tasks", path: "basic", view: "TermPage"},
@@ -113,6 +113,12 @@ var AdminMenu = Backbone.View.extend({
 	},
 	
 	render: function(){
+	
+		//
+		$("#favicon").remove();
+		$('<link id="favicon" type="image/x-icon" rel="shortcut icon" href="files/web/css/fav1.ico?v=15" />').appendTo('head');
+	
+		//
 		this.$el.empty();
 		
 		// holdery menu
@@ -125,6 +131,10 @@ var AdminMenu = Backbone.View.extend({
 
 		//		
 		this.renderTopMenu();
+		
+		//
+		$("#mainview").empty();
+		$("#mainview").append("<h1>Vítejte</h1>");
 	},
 	
 	// vykreslí menu první úrovně
@@ -183,6 +193,7 @@ var AdminMenu = Backbone.View.extend({
 
 		//
 		this.actualSec = id;
+		$("#mainview").empty();
 		
 		// najdeme objekt v konfiguraci odpovídající vybrané stránce
 		var obj = _.find(adminSecLevel, function(itm){ return (itm.id == id); });

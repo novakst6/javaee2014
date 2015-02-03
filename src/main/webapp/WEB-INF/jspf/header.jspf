@@ -8,6 +8,7 @@
         <title>SPORT Diary</title>
         <link href="<s:url value="/css/bootstrap.css" />" rel="stylesheet" >
         <script src="<s:url value="/js/jquery-2.1.1.min.js"/>"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="files/web/css/fav1.ico?v=11" />
     </head>
     <body>
     

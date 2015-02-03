@@ -25,10 +25,10 @@ public class ItemEntity extends BaseEntity {
     private Double price;
     @ManyToMany
     private Set<StockItemEntity> madeOf;
-    @ManyToMany
-    private Set<TerminalTypeEntity> terminalTypes;
     @ManyToOne
-    private FileEntity image;
+    private TerminalTypeEntity terminalType;
+    @ManyToOne
+    private ImageEntity image;
 
     public String getName() {
         return name;
@@ -78,20 +78,20 @@ public class ItemEntity extends BaseEntity {
         this.madeOf = madeOf;
     }
 
-    public Set<TerminalTypeEntity> getTerminalTypes() {
-        return terminalTypes;
-    }
-
-    public void setTerminalTypes(Set<TerminalTypeEntity> terminalTypes) {
-        this.terminalTypes = terminalTypes;
-    }
-
-    public FileEntity getImage() {
+    public ImageEntity getImage() {
         return image;
     }
 
-    public void setImage(FileEntity image) {
+    public void setImage(ImageEntity image) {
         this.image = image;
+    }
+
+    public TerminalTypeEntity getTerminalType() {
+        return terminalType;
+    }
+
+    public void setTerminalType(TerminalTypeEntity terminalType) {
+        this.terminalType = terminalType;
     }
     
     

@@ -21,6 +21,10 @@ import org.apache.log4j.Logger;
 public class ImageResizer {
         
     public static void resizeToFile(File from, File to, int width, int height){
+        
+        Logger.getRootLogger().info("ImageResizer from: "+from.getAbsolutePath());
+        Logger.getRootLogger().info("ImageResizer to: "+to.getAbsolutePath());
+        
         try{
             
             // přípona

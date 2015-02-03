@@ -1,0 +1,179 @@
+html{
+	padding:0;
+	margin:0;
+	height:100%;
+}
+
+body{
+	background-color: #F3F3F3;
+	background-image: url("metal1.jpg");
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: cover;
+	/*padding: 5px 10px 5px 10px;*/
+	padding:0;
+	margin:0;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	height:100%;
+}
+
+/* View */
+#frameholder{
+	width:100%;
+	height:100%;
+	overflow: hidden;
+	text-align: center;
+}
+#centerframe{
+	width: 980px;
+	margin:0 auto;
+}
+#headview{
+	display: none;
+	width: auto;
+	margin: 20px auto;
+	background-color: rgba(0,0,0,0.5);
+	padding: 20px;
+	border-radius: 5px;
+	color: white;
+}
+#mainview{
+	padding:20px;
+	/*background-color: rgba(255,255,255,0.25);*/
+	border-radius: 10px;
+	height: 80%;
+	overflow: auto;
+    /*box-shadow: 0 0 6px 1px #bcbcbc;*/
+	/*margin: 20px;*/
+}
+#headview h1{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 30px;
+	font-weight: 300;
+	margin: 0;
+	padding: 0;
+	line-height: 30px;
+}
+
+/* Footer */
+#footer{	
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
+	background-color:rgba(0,0,0,0.5);
+	color: #CCCCCC;
+	padding: 7px;
+	border-radius: 5px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+}
+
+/* Showroom Items & Cats */
+.showRoomItem {
+	display: inline-block;
+	width: 200px;
+	background-color:rgba(0,0,0,0.5);
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 10px;
+	position: relative;
+}
+.showRoomItem.itemItem {
+	cursor: default;
+}
+.showRoomItemImage{
+	width: 200px;
+	height: 150px;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: cover;
+}
+.showRoomItemName{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 17px;
+	font-weight: 300;
+	line-height: 22px;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+.showRoomItemTable{
+	/*background: #FF3333;*/
+	font-family: 'Open Sans', sans-serif;
+	font-size: 22px;
+	font-weight: 300;
+	line-height: 22px;
+	color: white;
+	text-align: center;
+	padding: 10px;
+	border-radius: 5px 5px 0 0;
+}
+.showRoomItemText{
+	color: white;
+	text-align: center;
+	padding: 5px;
+}
+.showRoomItemText.itemItem{
+	text-align: left;
+	text-indent: 12px;
+	padding-top: 12px;
+}
+.showRoomItemPrice{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 25px;
+	color: white;
+	font-weight: 300;
+	background-image: url("hexagone.png");
+	width: 100px;
+	height: 68px;
+	position: absolute;
+	right: -20px;
+	top: 165px;
+	padding-top: 30px;
+	text-indent: -15px;
+}
+.showRoomItemOrder{
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 20px;
+	display: inline-block;
+	/*background: #5CB85C;*/
+	width: 100%;
+	margin-top: 10px;
+	padding: 6px;
+	padding-left: 0px;
+	padding-right: 0px;
+	border-radius: 0 0 5px 5px;
+	color: white;
+	text-decoration: none;
+}
+.showRoomItemOrder:hover{
+	text-decoration: underline;
+}
+
+/* Status Codes */
+.showRoomItem.statusRed .showRoomItemTable {
+	background: #FF3333;
+}
+.showRoomItem.statusRed .showRoomItemOrder {
+	background: #FF3333;
+}
+.showRoomItem.statusOrange .showRoomItemTable {
+	background: #FF8F35;
+}
+.showRoomItem.statusOrange .showRoomItemOrder {
+	background: #FF8F35;
+}
+.showRoomItem.statusBlue .showRoomItemTable {
+	background: #35BAFF;
+}
+.showRoomItem.statusBlue .showRoomItemOrder {
+	background: #35BAFF;
+}
+.showRoomItem.statusGray .showRoomItemTable {
+	background: #ADADAD;
+}
+.showRoomItem.statusGray .showRoomItemOrder {
+	background: #ADADAD;
+}

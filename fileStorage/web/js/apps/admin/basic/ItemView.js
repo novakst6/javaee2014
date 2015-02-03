@@ -1,3 +1,46 @@
+var ItemModel = Backbone.Model.extend({
+	urlRoot: window.app.api + 'item',
+	defaults: {
+		"id": null,
+		"name": "",
+		"shortText": "",
+		"longText": "",
+		"category": null,
+		"price": 0,
+		"terminalType": null,
+		"image": null
+	},
+	name: "Položka sortimentu",
+	fields: {
+		"name": {title: "Název", type: "string"},
+		"shortText": {title: "Krátký text", type: "string"},
+		"longText": {title: "Dlouhý text", type: "string", extra: "long"},
+		"terminalType": {title: "Typ terminálu", type: "select", collection: "termTypes"},
+		"price": {title: "Cena v Kč", type: "number"}
+	}
+});
+
+var ItemCollection = Backbone.Collection.extend({
+	url: window.app.api + 'item',
+    model: ItemModel
+});
+
+var TermTypeModel = Backbone.Model.extend({
+	urlRoot: window.app.api + 'term-type',
+	defaults: {
+		"id": null,
+		"name": "",
+		"screenType": 0,
+		"isStacionary": false,		
+		"isVendingPost": false
+	}
+});
+
+var TermTypeCollection = Backbone.Collection.extend({
+	url: window.app.api + 'term-type',
+    model: TermTypeModel
+});
+
 var CatModel = Backbone.Model.extend({
 	urlRoot: window.app.api + 'item-cat',
 	defaults: {
@@ -6,11 +49,6 @@ var CatModel = Backbone.Model.extend({
 		"memo": "",
 		"parent": null,
 		"image": null
-	},
-	name: "Kategorie sortimentu",
-	fields: {
-		"name": {title: "Název", type: "string"},
-		"memo": {title: "Poznámka", type: "string"}
 	}
 });
 
@@ -19,18 +57,18 @@ var CatCollection = Backbone.Collection.extend({
     model: CatModel
 });
 
-var CatView = Backbone.View.extend({
+var ItemView = Backbone.View.extend({
 
-	name: "Kategorie sortimentu",
-	fieldPre: 		"cat_form_",
-	fieldHashPre: 	"#cat_form_",
+	name: "Sortiment",
+	fieldPre: 		"item_form_",
+	fieldHashPre: 	"#item_form_",
 	
-	terms: null,
+	termTypes: null,
 	
 	model: null, 
-	modelClass: "CatModel",
+	modelClass: "ItemModel",
 	collection: null,
-	collectionClass: "CatCollection",
+	collectionClass: "ItemCollection",
 	
 	dialog: null,
 	form: null,
@@ -49,12 +87,15 @@ var CatView = Backbone.View.extend({
 		// model
 		this.model = new window[this.modelClass];
 		
+		// typy terminálů
+		this.termTypes = new TermTypeCollection;
+		this.termTypes.on("sync", this.createDialog, this); // <- <- createDialog() zde
+		this.termTypes.fetch();
+		
 		// kolekce
 		this.collection = new window[this.collectionClass];
 		this.collection.on("sync", this.render, this);
 		this.collection.fetch();
-		
-		this.createDialog();
 	},
 	
 	destroy: function(){
@@ -172,10 +213,35 @@ var CatView = Backbone.View.extend({
 			title = this.model.fields[id].title;
 			type = this.model.fields[id].type;
 			html += "<label for='"+this.fieldPre+id+"'>"+title+"</label>";
-			html += "<input type='"+type
-						+"' name='"+this.fieldPre+id
+			
+			// textarea
+			if(this.model.fields[id].extra && this.model.fields[id].extra == "long"){
+				html += "<textarea "
+							+" name='"+this.fieldPre+id
+							+"' id='"+this.fieldPre+id
+							+"' value='' class='text ui-widget-content ui-corner-all'></textarea>";
+				continue;
+			}
+			
+			// ne-select
+			if(type != "select"){
+				html += "<input type='"+type
+							+"' name='"+this.fieldPre+id
+							+"' id='"+this.fieldPre+id
+							+"' value='' class='text ui-widget-content ui-corner-all'>";
+				continue;
+			}
+			
+			// select
+			var col = this[this.model.fields[id].collection];			
+			html += "<select name='"+this.fieldPre+id
 						+"' id='"+this.fieldPre+id
-						+"' value='' class='text ui-widget-content ui-corner-all'>";
+						+"' class='text ui-widget-content ui-corner-all'>";
+						
+			col.each(function(item){
+				html += "<option value='"+item.get("id")+"'>"+item.get("name")+"</option>";			
+			});
+			html += "</select>";
 		}			
 			
 		// zavírací tagy
@@ -235,6 +301,17 @@ var CatView = Backbone.View.extend({
 						+ " Model: " + this.model.get(id)
 					);
 					break;
+				case "select":
+					if(this.model.get(id) != null){
+						$(this.fieldHashPre+id).val(
+							this.model.get(id).id
+						);
+						console.log("Field: " + id 
+							+ " Value: " + $(this.fieldHashPre+id).val()
+							+ " Model: " + this.model.get(id).id
+						);
+					}
+					break;
 				default:
 					$(this.fieldHashPre+id).val(
 						this.model.get(id)
@@ -266,6 +343,11 @@ var CatView = Backbone.View.extend({
 					this.model.set(id, $(this.fieldHashPre+id)[0].checked);
 					console.log("Field: "+id+" Value: "+$(this.fieldHashPre+id)[0].checked);
 					break;
+				case "select":
+					var selID = parseFloat($(this.fieldHashPre+id).val());
+					this.model.set(id, {id: selID});
+					console.log("Field: "+id+" Value: "+$(this.fieldHashPre+id).val());
+					break;
 				default:
 					this.model.set(id, $(this.fieldHashPre+id).val());
 					console.log("Field: "+id+" Value: "+$(this.fieldHashPre+id).val());
@@ -294,14 +376,23 @@ var CatView = Backbone.View.extend({
 
 var NestableView = Backbone.View.extend({
 	
-	name: "Hierarchie kategorií",
+	name: "Zařazení do kategorií",
 	id: "nestableView",
+	
+	cats: null,
+	catsClass: "CatCollection",
 	
 	collection: null,	
 	
+	initialize: function(){
+		this.cats = new window[this.catsClass];
+		this.cats.on("sync", this.render, this);
+		//this.cats.fetch();
+	},
+	
 	renderCollection: function(col){
 		this.collection = col;
-		this.render();
+		this.cats.fetch();	// <- render() zde
 	},
 	
 	render: function(){
@@ -314,7 +405,7 @@ var NestableView = Backbone.View.extend({
 		var holder = $("<div />", {class: "nestableHolder"});
 		this.$el.append(holder);
 		
-		holder.append(this.nestableJSON2HTML(this.collection.toJSON()));
+		holder.append(this.nestableJSON2HTML(this.collection.toJSON(), this.cats.toJSON()));
 		
 		// nestable
 		console.log("Applying nestable");
@@ -376,12 +467,16 @@ var NestableView = Backbone.View.extend({
 	},
 	
 	readAndSave: function(){
-		console.log("Nestable SAVE, serialised:");
+		//console.log("Nestable SAVE, serialised:");
 		this.processList($('.dd').nestable('serialize'), null);
 		//this.collection.fetch();
 	},
 	
 	processList: function(list, parent){
+		//console.log("Nestable, serialised ");
+		//console.log(list);
+		//return;
+		
 		if(list == null){return;}
 		if(list.length <= 0){return;}
 		var thisObject = this;
@@ -394,49 +489,108 @@ var NestableView = Backbone.View.extend({
 	
 		//
 		console.log("Nestable process item: ");
-		console.log(obj);
-		console.log("Parent: ");
-		console.log(parent);
+		
+		// typ
+		var type = "item";
+		var objID = obj.id;
+		console.log("Orig ID: "+objID);
+		if((typeof objID) == "string"){
+			if(obj.id.charAt(0) == "c"){
+				type = "cat";
+				objID = objID.substr(1);
+			}
+		}		
+		console.log("Type: "+type+" ID: "+objID);
+		if(parent == null){
+			console.log("Parent ID: null");			
+		}else {
+			console.log("Parent ID: "+parent.id);
+		}
 		
 		// model z collection
-		var item =  this.collection.find(function(model){ return model.get('id') == obj.id; });
-
-		// uložit změnu
-		if(item.get("parent") == null){
-			if(parent == null){
-				// ok
-			}else{
-				item.set("parent", {id: parent.id});
-				console.log("New parent of "+item.get("id")+" is "+parent.id);
-				item.save();
-			}
-		} else {
-			if(parent == null){
-				item.set("parent", null);
-				console.log("New parent of "+item.get("id")+" is [null]");
-				item.save();
-			}else{
-				if(item.get("parent").id == parent.id){
+		var item = null;
+		if(type == "item"){
+			item =  this.collection.find(function(model){ return model.get('id') == obj.id; });
+		}
+		if(type == "cat"){
+			item =  this.cats.find(function(model){ return model.get('id') == objID; });
+		}
+		
+		// uložit změnu - item
+		if(type == "item"){		
+			if(item.get("category") == null){
+				if(parent == null){
 					// ok
-				} else {
+				}else{
+					item.set("category", {id: parent.id});
+					console.log("New parent of "+item.get("id")+" is "+parent.id);
+					item.save();
+				}
+			} else {
+				if(parent == null){
+					item.set("parent", null);
+					console.log("New parent of "+item.get("id")+" is [null]");
+					item.save();
+				}else{
+					if(item.get("category").id == parent.id){
+						// ok
+					} else {
+						item.set("category", {id: parent.id});
+						console.log("New parent of "+item.get("id")+" is "+parent.id);
+						item.save();
+					}
+				}	
+			}
+		}
+
+		// uložit změnu - cat
+		if(type == "cat"){
+			if(item.get("parent") == null){
+				if(parent == null){
+					// ok
+				}else{
 					item.set("parent", {id: parent.id});
 					console.log("New parent of "+item.get("id")+" is "+parent.id);
 					item.save();
 				}
-			}	
+			} else {
+				if(parent == null){
+					item.set("parent", null);
+					console.log("New parent of "+item.get("id")+" is [null]");
+					item.save();
+				}else{
+					if(item.get("parent").id == parent.id){
+						// ok
+					} else {
+						item.set("parent", {id: parent.id});
+						console.log("New parent of "+item.get("id")+" is "+parent.id);
+						item.save();
+					}
+				}	
+			}
 		}
 		
 		// zpracovat potomky
-		this.processList(obj.children, item);
-
+		if(type == "cat"){
+			this.processList(obj.children, item);
+		}
+		if(type == "item"){
+			this.processList(obj.children, parent);
+		}
 	},
 	
 	nestableGetHTML: function (obj){
 		//console.log("obj: "+JSON.stringify(obj));
 		if(obj == undefined){return "";}
+		
+		// úprava id
+		var id = obj.id;
+		if(obj.type == "cat"){
+			id = "c"+obj.id;
+		}
 
-		var myhtml = '<li class="dd-item" data-id="'+obj.id+'">';
-		myhtml = myhtml + '<div class="dd-handle">'+obj.name+" ("+obj.id+") "+'</div>';
+		var myhtml = '<li class="dd-item" data-id="'+id+'">';
+		myhtml = myhtml + '<div class="dd-handle dd-handle-'+obj.type+'">'+obj.name+" ("+id+") "+'</div>';
 
 		if(obj.children != undefined){
 			myhtml = myhtml + '<ol class="dd-list">';
@@ -451,29 +605,57 @@ var NestableView = Backbone.View.extend({
 		return myhtml;
 	},
 
-	nestableJSON2HTML: function(json){
+	nestableJSON2HTML: function(json, catsJson){
 	
 		//
 		console.log("nestableJSON2HTML, json:");
 		console.log(json);
+		
+		//
+		console.log("nestableJSON2HTML, catsJson:");
+		console.log(catsJson);
 	
 		// uloží do indexovaného listu
-		var object_list = [];
+		var object_list = {};
 		jQuery.each(json, function(index, item){
+			item.type = "item";
+			item.parent = item.category;
 			object_list[item.id] = item;
 		});
+		jQuery.each(catsJson, function(index, item){
+			item.type = "cat";
+			object_list["c"+item.id] = item;
+		});
+		console.log("Nestable object list: ");
+		console.log(object_list);
 		//app.data.nestable.orig_list = object_list;
 		
 		// přidá objekty k nadřazeným, jako jejich potomky
 		jQuery.each(object_list, function(index, item){
-			if(item == undefined){return;}
-			//alert(JSON.stringify(item));		
-			if(item.parent != null && item.parent != undefined){
-				if(object_list[item.parent.id].children == undefined){
-					object_list[item.parent.id].children = [];
+			if(item == undefined){return;}			
+			//alert(JSON.stringify(item));	
+			
+			// cat
+			if(item.type == "cat"){
+				if(item.parent != null && item.parent != undefined){
+					var id = "c"+item.parent.id;
+					if(object_list[id].children == undefined){
+						object_list[id].children = [];
+					}
+					var len = object_list[id].children.length;
+					object_list[id].children[len] = item;
 				}
-				var len = object_list[item.parent.id].children.length;
-				object_list[item.parent.id].children[len] = item;
+				return;
+			}
+
+			// item
+			if(item.category != null && item.category != undefined){
+				var id = "c"+item.category.id;
+				if(object_list[id].children == undefined){
+					object_list[id].children = [];
+				}
+				var len = object_list[id].children.length;
+				object_list[id].children[len] = item;
 			}
 		});
 		

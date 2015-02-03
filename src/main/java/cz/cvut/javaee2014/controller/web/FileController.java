@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Properties;
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -293,21 +296,25 @@ public class FileController {
             }
             
             // batch
-            /*if(fileEntity != null){
+            if(fileEntity != null){
+                
+                Logger.getRootLogger().info("Starting batch job");
+ 
                 JobOperator job = BatchRuntime.getJobOperator(); 
                 Properties props = new Properties();
-                props.setProperty("image_id", ""+imageEntity.getId());
+                /*props.setProperty("image_id", ""+imageEntity.getId());
                 
                 if(cleanupOldFile){
                     props.setProperty("old_file_id", ""+oldFileEntity.getId());
-                }
+                }*/
                 
                 job.start("imageJob", props);
-            }*/
+            }
 
             return "OK";
 
         } catch (Exception e) {
+            e.printStackTrace();
             return "Exception in upload: " + name + " => " + e.getMessage();
         }
     }

@@ -22,17 +22,30 @@ public class TestWebsocketEndpoint {
     public String hello(String message, Session session) {
         Logger.getRootLogger().info("Received : "+ message);
         
-        String broadcastMessage = "Server says: "+message;
+        if(message.equalsIgnoreCase("new-order")){
+            sendToAll("new-order", session);
+            return "OK";
+        }
         
+        if(message.equalsIgnoreCase("update-order")){
+            sendToAll("update-order", session);
+            return "OK";
+        }
+        
+        String broadcastMessage = "Server says: "+message;        
+        sendToAll(broadcastMessage, session);
+        
+        return "OK";
+    }
+    
+    public void sendToAll(String msg, Session session){
         for(Session s : session.getOpenSessions()){
             try {
-                s.getBasicRemote().sendText(broadcastMessage);
+                s.getBasicRemote().sendText(msg);
             } catch (IOException ex) {
                 Logger.getRootLogger().info("Error in websocket broadcast : " + ex.getMessage());
             }
         }
-        
-        return "OK";
     }
  
     @OnOpen
